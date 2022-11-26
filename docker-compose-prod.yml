@@ -1,0 +1,24 @@
+version: "3.8"
+services:
+    gateway:
+        build:
+            context: gateway/docker/production/nginx
+        ports:
+            - "8080:8080"
+            - "8081:8081"
+        depends_on:
+            - frontend
+            - api
+    frontend:
+        build: 
+            context: frontend/docker/production/nginx
+        depends_on:
+            - frontend-node
+    
+    frontend-node:
+        build:
+            context: frontend/docker/production/node 
+
+    api:
+        build: 
+            context: api/docker/production/nginx
