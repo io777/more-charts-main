@@ -66,8 +66,13 @@ services:
             dockerfile: docker/development/src/Dockerfile
         volumes:
             - ./api:/app
-        env_file:
-            - .env
+        environment:
+            SQL_ENGINE: /run/secrets/sql_engine
+            SQL_DATABASE: /run/secrets/sql_database
+            SQL_USER: /run/secrets/sql_user
+            SQL_HOST: /run/secrets/sql_host
+            SQL_PASSWORD: /run/secrets/sql_password
+            SQL_PORT: /run/secrets/sql_post
         depends_on:
             - postgres
 
@@ -93,12 +98,18 @@ services:
         network_mode: service:traefik
 
 secrets:
+    sql_engine:
+        file: ./docker/development/secrets/sql_engine
     sql_user:
         file: ./docker/development/secrets/sql_user
     sql_password:
         file: ./docker/development/secrets/sql_password
     sql_database:
         file: ./docker/development/secrets/sql_database
+    sql_host:
+        file: ./docker/development/secrets/sql_host
+    sql_post:
+        file: ./docker/development/secrets/sql_post
 
 networks:
     traefik-public:
