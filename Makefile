@@ -94,3 +94,8 @@ cucumber-smoke:
 
 cucumber-e2e:
 	docker-compose -f docker-compose.yml run --rm cucumber-node-cli yarn e2e
+
+# jenkins
+validate-jenkins:
+	curl --user andrey -X POST -F "jenkinsfile=<Jenkinsfile" http://localhost:8000/pipeline-model-converter/validate
+# curl --user ${USER} -X POST -F "jenkinsfile=<Jenkinsfile" ${HOST}/pipeline-model-converter/validate
