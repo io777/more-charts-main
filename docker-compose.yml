@@ -95,7 +95,7 @@ services:
         networks:
             - traefik-public
             - default
-        network_mode: service:traefik
+        # network_mode: service:traefik
 
 secrets:
     sql_engine:
