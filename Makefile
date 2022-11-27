@@ -8,38 +8,38 @@ test: api-test frontend-test test-e2e
 test-e2e: cucumber-clear cucumber-e2e
 
 docker-up:
-	docker-compose -f docker-compose.yml up --build -d
+	docker-compose up --build -d
 
 docker-down:
-	docker-compose -f docker-compose.yml down --remove-orphans
+	docker-compose down --remove-orphans
 
 docker-down-clear:
-	docker-compose -f docker-compose.yml down -v --remove-orphans
+	docker-compose down -v --remove-orphans
 
 docker-pull:
-	docker-compose -f docker-compose.yml pull
+	docker-compose pull
 
 docker-build:
-	docker-compose -f docker-compose.yml build
+	docker-compose build
 
 # BACKEND
 api-init: api-pip-install
 
 api-pip-install:
-	docker-compose -f docker-compose.yml run --rm api-src python3 -m pip install --upgrade pip
-	docker-compose -f docker-compose.yml run --rm api-src python3 -m pip install -r requirements.txt
+	docker-compose run --rm api-src python3 -m pip install --upgrade pip
+	docker-compose run --rm api-src python3 -m pip install -r requirements.txt
 
 api-check-all:
-	docker-compose -f docker-compose.yml run --rm api-src sh ./ci
+	docker-compose run --rm api-src sh ./ci
 
 api-black-check:
-	docker-compose -f docker-compose.yml run --rm api-src black --check .
+	docker-compose run --rm api-src black --check .
 
 api-black:
-	docker-compose -f docker-compose.yml run --rm api-src black .
+	docker-compose run --rm api-src black .
 
 api-test:
-	docker-compose -f docker-compose.yml run --rm api-src python3 manage.py test
+	docker-compose run --rm api-src python3 manage.py test
 
 api-clear:
 	docker run --rm -v ${PWD}/api:/app -w /app alpine sh -c 'rm -rf var/cache/* var/log/* var/test/*'
@@ -48,16 +48,16 @@ api-clear:
 frontend-init: frontend-yarn-install
 
 frontend-yarn-install:
-	docker-compose -f docker-compose.yml run --rm frontend-node yarn install
+	docker-compose run --rm frontend-node yarn install
 
 frontend-yarn-upgrade:
-	docker-compose -f docker-compose.yml run --rm frontend-node yarn upgrade
+	docker-compose run --rm frontend-node yarn upgrade
 
 frontend-test:
-	docker-compose -f docker-compose.yml run --rm frontend-node yarn test
+	docker-compose run --rm frontend-node yarn test
 
 frontend-lintfix:
-	docker-compose -f docker-compose.yml run --rm frontend-node yarn lintfix
+	docker-compose run --rm frontend-node yarn lintfix
 
 frontend-check: frontend-test frontend-lintfix
 
@@ -68,8 +68,8 @@ frontend-clear:
 	docker run --rm -v ${PWD}/frontend:/app -w /app alpine sh -c 'rm -rf .ready build'
 
 frontend-run:
-	docker-compose -f docker-compose.yml restart frontend-node
-	docker-compose -f docker-compose.yml restart frontend
+	docker-compose restart frontend-node
+	docker-compose restart frontend
 
 # CUCUMBER
 cucumber-clear:
@@ -78,22 +78,22 @@ cucumber-clear:
 cucumber-init: cucumber-yarn-install
 
 cucumber-yarn-install:
-	docker-compose -f docker-compose.yml run --rm cucumber-node-cli yarn install
+	docker-compose run --rm cucumber-node-cli yarn install
 
 cucumber-yarn-upgrade:
-	docker-compose -f docker-compose.yml run --rm cucumber-node-cli yarn upgrade
+	docker-compose run --rm cucumber-node-cli yarn upgrade
 
 cucumber-lint:
-	docker-compose -f docker-compose.yml run --rm cucumber-node-cli yarn lint
+	docker-compose run --rm cucumber-node-cli yarn lint
 
 cucumber-lint-fix:
-	docker-compose -f docker-compose.yml run --rm cucumber-node-cli yarn lint-fix
+	docker-compose run --rm cucumber-node-cli yarn lint-fix
 
 cucumber-smoke:
-	docker-compose -f docker-compose.yml run --rm cucumber-node-cli yarn smoke
+	docker-compose run --rm cucumber-node-cli yarn smoke
 
 cucumber-e2e:
-	docker-compose -f docker-compose.yml run --rm cucumber-node-cli yarn e2e
+	docker-compose run --rm cucumber-node-cli yarn e2e
 
 # jenkins
 validate-jenkins:
