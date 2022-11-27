@@ -5,6 +5,7 @@ pipeline {
     }
     environment {
         CI = 'true'
+        SQL_USER = credentials('SQL_USER')
     }
     stages {
         stage("Init") {
