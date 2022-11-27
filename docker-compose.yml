@@ -77,9 +77,9 @@ services:
             - ./db/db-dump:/dump
             - ./db/db-data:/var/lib/postgresql/data
         environment:
-            POSTGRES_USER: ${SQL_USER}
-            POSTGRES_PASSWORD: ${SQL_PASSWORD}
-            POSTGRES_DB: ${SQL_DATABASE}
+            POSTGRES_USER: /run/secrets/sql_user
+            POSTGRES_PASSWORD: /run/secrets/sql_password
+            POSTGRES_DB: /run/secrets/sql_database
     
     cucumber-node-cli:
         build:
@@ -91,6 +91,14 @@ services:
             - traefik-public
             - default
         network_mode: service:traefik
+
+secrets:
+    sql_user:
+        file: ./docker/development/secrets/sql_user
+    sql_password:
+        file: ./docker/development/secrets/sql_password
+    sql_database:
+        file: ./docker/development/secrets/sql_database
 
 networks:
     traefik-public:
