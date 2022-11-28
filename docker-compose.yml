@@ -110,8 +110,8 @@ services:
 secrets:
     sql_engine:
         file: ./docker/development/secrets/sql_engine
-    # sql_user:
-    #     file: ./docker/development/secrets/sql_user
+    sql_user:
+        file: ./docker/development/secrets/sql_user
     sql_password:
         file: ./docker/development/secrets/sql_password
     sql_database:
