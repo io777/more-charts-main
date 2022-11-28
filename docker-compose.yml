@@ -73,6 +73,16 @@ services:
             SQL_HOST: /run/secrets/sql_host
             SQL_PASSWORD: /run/secrets/sql_password
             SQL_PORT: /run/secrets/sql_post
+            EMAIL_HOST: /run/secrets/email_host
+            EMAIL_PORT: /run/secrets/email_port
+            EMAIL_HOST_USER: /run/secrets/email_host_user
+            EMAIL_USE_SSL: /run/secrets/email_use_ssl
+            DEBUG: /run/secrets/django_debug
+            ALLOWED_HOSTS: /run/secrets/django_allowed_hosts
+            SECRET_KEY: /run/secrets/django_secret_key
+            PUBG_API1: /run/secrets/django_pubg_api1
+            PUBG_API2: /run/secrets/django_pubg_api2
+            PUBG_API3: /run/secrets/django_pubg_api3
         depends_on:
             - postgres
 
@@ -110,6 +120,38 @@ secrets:
         file: ./docker/development/secrets/sql_host
     sql_post:
         file: ./docker/development/secrets/sql_post
+    celery_allowed_hosts:
+        file: ./docker/development/secrets/celery_allowed_hosts
+    celery_broker:
+        file: ./docker/development/secrets/celery_broker
+    celery_debug:
+        file: ./docker/development/secrets/celery_debug
+    celery_secret_key:
+        file: ./docker/development/secrets/celery_secret_key
+    django_allowed_hosts:
+        file: ./docker/development/secrets/django_allowed_hosts
+    django_debug:
+        file: ./docker/development/secrets/django_debug
+    django_pubg_api1:
+        file: ./docker/development/secrets/django_pubg_api1
+    django_pubg_api2:
+        file: ./docker/development/secrets/django_pubg_api2
+    django_pubg_api3:
+        file: ./docker/development/secrets/django_pubg_api3
+    django_secret_key:
+        file: ./docker/development/secrets/django_secret_key
+    email_host:
+        file: ./docker/development/secrets/email_host
+    email_host_user:
+        file: ./docker/development/secrets/email_host_user
+    email_port:
+        file: ./docker/development/secrets/email_port
+    email_use_ssl:
+        file: ./docker/development/secrets/email_use_ssl
+    flower_password:
+        file: ./docker/development/secrets/flower_password
+    flower_user:
+        file: ./docker/development/secrets/flower_user
 
 networks:
     traefik-public:
