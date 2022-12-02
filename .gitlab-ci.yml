@@ -8,3 +8,5 @@ dev:
     stage: dev
     script:
         - docker -v
+    tags:
+        - runner_1
