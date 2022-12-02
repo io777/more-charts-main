@@ -20,7 +20,7 @@ docker-pull:
 	docker-compose pull
 
 docker-build:
-	docker-compose build
+	docker-compose build --pull
 
 # BACKEND
 api-init: api-pip-install
