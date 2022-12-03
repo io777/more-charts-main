@@ -13,7 +13,7 @@ dev:
         - branches
     image: docker/compose:latest
     services:
-        - docker:stable-dind
+        - docker:dind
     before_script:
         - mount | grep cgroup
         - docker info
