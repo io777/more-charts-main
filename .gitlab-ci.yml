@@ -19,7 +19,7 @@ dev:
         - apk add --no-cache make
     after_script:
         - ls -la
-        - la -la /api/
+        - ls -la /api/
     cache:
         key: ${CI_COMMIT_REF_SLUG}
         paths:
