@@ -5,9 +5,9 @@ dev:
     stage: dev
     only:
         - branches
-    image: docker/compose:1.26.0
+    image: docker/compose:2.13.0
     services:
-        - docker:19.03-dind
+        - docker:20.10.21-dind
     before_script:
         - apk add --no-cache make
     script:
