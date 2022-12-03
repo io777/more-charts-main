@@ -18,6 +18,11 @@ dev:
         - mount | grep cgroup
         - docker info
         - apk add --no-cache make
+    cache:
+        key: ${CI_COMMIT_REF_SLUG}
+        paths:
+            - frontend/node_modules/
+            - cucumber/node_modules/
     script:
         - make init
     tags:
