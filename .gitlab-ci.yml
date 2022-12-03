@@ -6,7 +6,7 @@ variables:
     DOCKER_HOST: tcp://docker:2376
     DOCKER_CERT_PATH: "/certs/client"
     DOCKER_TLS_VERIFY: 1
-    PIP_CACHE_DIR: "$CI_PROJECT_DIR/api/.cache/pip"
+    PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
 
 dev:
     stage: dev
@@ -16,14 +16,12 @@ dev:
     services:
         - docker:dind
     before_script:
-        - mount | grep cgroup
-        - docker info
         - apk add --no-cache make
     cache:
         key: ${CI_COMMIT_REF_SLUG}
         paths:
-            - api/.venv
-            - api/.cache/pip
+            - .venv
+            - .cache/pip
             - frontend/node_modules/
             - cucumber/node_modules/
     script:
