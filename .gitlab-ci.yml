@@ -2,9 +2,10 @@ stages:
     - dev
 
 variables:
-    DOCKER_DRIVER: overlay2
     DOCKER_TLS_CERTDIR: "/certs"
     DOCKER_HOST: tcp://docker:2376
+    DOCKER_CERT_PATH: /certs/client
+    DOCKER_TLS_VERIFY: 1
 
 dev:
     stage: dev
@@ -14,6 +15,7 @@ dev:
     services:
         - docker:stable-dind
     before_script:
+        - docker info
         - apk add --no-cache make
     script:
         - make init
