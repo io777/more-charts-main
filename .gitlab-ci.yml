@@ -2,12 +2,15 @@ stages:
     - dev
 
 dev:
+    stage: dev
+    only:
+        - branches
     image: docker/compose:1.26.0
     services:
         - docker:19.03-dind
-    stage: dev
+    before_script:
+        - apk add --no-cashe make
     script:
-        - docker -v
-        - docker-compose -v
+        - make init
     tags:
         - runner_1
