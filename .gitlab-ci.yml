@@ -1,4 +1,4 @@
-image: docker:19-git
+image: docker/compose:latest
 
 stages:
     - dev
@@ -7,5 +7,6 @@ dev:
     stage: dev
     script:
         - docker -v
+        - docker-compose -v
     tags:
         - runner_1
