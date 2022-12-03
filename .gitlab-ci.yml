@@ -1,6 +1,9 @@
 stages:
     - dev
 
+variables:
+    DOCKER_HOST: tcp://docker:2376
+
 dev:
     stage: dev
     only:
