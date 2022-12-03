@@ -17,6 +17,8 @@ dev:
         - docker:dind
     before_script:
         - apk add --no-cache make
+    after_script:
+        - ls -la
     cache:
         key: ${CI_COMMIT_REF_SLUG}
         paths:
