@@ -17,17 +17,16 @@ dev:
         - docker:dind
     before_script:
         - apk add --no-cache make
-    after_script:
-        - ls -la
-        - ls -la api/api/
     cache:
         key: ${CI_COMMIT_REF_SLUG}
         paths:
-            - .venv
-            - .cache/pip
+            - api/pip_cache
             - frontend/node_modules/
             - cucumber/node_modules/
     script:
         - make init
+    after_script:
+        - ls -la api/
+        - ls -la api/pip_cache
     tags:
         - runner_1
