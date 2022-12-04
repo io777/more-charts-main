@@ -26,7 +26,7 @@ COPY ./requirements.txt ./
 RUN python3 -m pip install --upgrade pip
 RUN python3 -m pip install -r requirements.txt --cache-dir /app/api/pip_cache
 RUN python3 -m pip cache dir
-RUN ls -la
+RUN ls -la /app/api/
 RUN pwd
 
 # Clean
