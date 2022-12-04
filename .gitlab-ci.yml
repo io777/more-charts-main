@@ -8,6 +8,18 @@ variables:
     DOCKER_TLS_VERIFY: 1
     PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
 
+# Pip's cache doesn't store the python packages
+# https://pip.pypa.io/en/stable/reference/pip_install/#caching
+cache:
+  paths:
+    - .cache/pip
+
+before_script:
+  - python -V               # Print out python version for debugging
+  - pip install virtualenv
+  - virtualenv venv
+  - source venv/bin/activate
+
 dev:
     stage: dev
     only:
@@ -20,7 +32,6 @@ dev:
     cache:
         key: ${CI_COMMIT_REF_SLUG}
         paths:
-            - api/pip_cache/
             - frontend/node_modules/
             - cucumber/node_modules/
     script:
