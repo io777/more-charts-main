@@ -20,7 +20,7 @@ dev:
     cache:
         key: ${CI_COMMIT_REF_SLUG}
         paths:
-            - api/pip_cache
+            - api/pip_cache/
             - frontend/node_modules/
             - cucumber/node_modules/
     script:
