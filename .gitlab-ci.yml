@@ -20,13 +20,13 @@ dev:
     cache:
         key: ${CI_COMMIT_REF_SLUG}
         paths:
-            - api/pip_cache
+            - /app/api/pip_cache
             - frontend/node_modules/
             - cucumber/node_modules/
     script:
         - make init
     after_script:
-        - ls -la api/
-        - ls -la api/pip_cache
+        - ls -la /app/api/
+        - ls -la /app/api/pip_cache
     tags:
         - runner_1
