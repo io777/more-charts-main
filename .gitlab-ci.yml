@@ -37,7 +37,7 @@ dev:
     script:
         - make init
     after_script:
-        - ls -la api/
-        - ls -la api/pip_cache
+        - ls -la .cache/
+        - ls -la .cache/pip
     tags:
         - runner_1
