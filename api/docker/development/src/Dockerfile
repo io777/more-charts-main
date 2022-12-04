@@ -22,11 +22,9 @@ RUN apk add --update\
 WORKDIR /app
 
 COPY ./requirements.txt ./
-COPY ./pip_cache ./
 
 RUN python3 -m pip install --upgrade pip
-RUN mkdir ./pip_cache
-RUN python3 -m pip install -r requirements.txt --cache-dir ./pip_cache
+RUN python3 -m pip install -r requirements.txt --cache-dir /app/api/pip_cache
 
 # Clean
 RUN apk del -r python3-dev postgresql
