@@ -26,8 +26,6 @@ dev:
     script:
         - make init
     after_script:
-        - ls -la /app/api/
-        - ls -la /app/api/pip_cache
         - ls -la api/
         - ls -la api/pip_cache
     tags:
