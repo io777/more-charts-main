@@ -26,7 +26,7 @@ docker-build:
 api-init: api-pip-install
 
 api-pip-install:
-	docker-compose run --rm api-src python3 -m pip install -r requirements.txt --cache-dir=/app/api/pip_cache/
+	docker-compose run --rm api-src /bin/sh -c 'python3 -m pip install -r requirements.txt --cache-dir=/app/api/pip_cache/'
 
 api-check-all:
 	docker-compose run --rm api-src sh ./ci
