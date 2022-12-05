@@ -6,6 +6,7 @@ variables:
     DOCKER_HOST: tcp://docker:2376
     DOCKER_CERT_PATH: "/certs/client"
     DOCKER_TLS_VERIFY: 1
+    PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
 
 dev:
     stage: dev
@@ -19,9 +20,10 @@ dev:
     cache:
         key: ${CI_COMMIT_REF_SLUG}
         paths:
-            - api/pip_cache/
             - frontend/node_modules/
             - cucumber/node_modules/
+            - api/.cache/pip
+            - api/venv/
     script:
         - make init
     after_script:

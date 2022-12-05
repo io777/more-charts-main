@@ -27,7 +27,9 @@ api-init: api-pip-install
 
 api-pip-install:
 	docker-compose run --rm api-src python3 -m pip install --upgrade pip
-	docker-compose run --rm api-src python3 -m pip install -r requirements.txt --cache-dir /app/api/pip_cache
+	docker-compose run --rm api-src python3 -m pip install virtualenv
+	docker-compose run --rm api-src virtualenv venv
+	docker-compose run --rm api-src docker-compose run --rm api-src | python3 -m pip install -r requirements.txt
 
 api-check-all:
 	docker-compose run --rm api-src sh ./ci
