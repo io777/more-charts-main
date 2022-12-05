@@ -27,7 +27,7 @@ api-init: api-pip-install
 
 api-pip-install:
 	docker-compose run --rm api-src python3 -m pip install --upgrade pip
-	docker-compose run --rm api-src python3 -m pip install -r requirements.txt --cache-dir=~/.cache/pip_cache/
+	docker-compose run --rm api-src python3 -m pip install -r requirements.txt --cache-dir=/app/api/pip_cache/
 
 api-check-all:
 	docker-compose run --rm api-src sh ./ci
@@ -45,7 +45,8 @@ api-clear:
 	docker run --rm -v ${PWD}/api:/app -w /app alpine sh -c 'rm -rf var/cache/* var/log/* var/test/*'
 
 api-run:
-	docker-compose restart api-src
+#docker-compose restart api-src
+	docker-compose run --rm api-src python3 manage.py runserver 0.0.0.0:8000
 	docker-compose restart api
 
 # FRONTEND

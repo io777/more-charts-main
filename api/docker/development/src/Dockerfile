@@ -29,7 +29,7 @@ COPY ./requirements.txt ./
 # Clean
 RUN apk del -r python3-dev postgresql
 
-CMD ["python3", "manage.py", "runserver", "0.0.0.0:8000"]
+# CMD ["python3", "manage.py", "runserver", "0.0.0.0:8000"]
 
 EXPOSE 8000
 
