@@ -29,7 +29,7 @@ api-pip-install:
 	docker-compose run --rm api-src python3 -m pip install --upgrade pip
 	docker-compose run --rm api-src python3 -m pip install virtualenv
 	docker-compose run --rm api-src virtualenv venv
-	docker-compose run --rm api-src docker-compose run --rm api-src | python3 -m pip install -r requirements.txt
+	docker-compose run --rm api-src source venv/bin/activate | python3 -m pip install -r requirements.txt
 
 api-check-all:
 	docker-compose run --rm api-src sh ./ci
