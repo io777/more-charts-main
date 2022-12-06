@@ -11,30 +11,35 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
 import os
-from api.env import env, root
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-# BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-BASE_DIR = root()
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+
+def get_secret(key, default):
+    value = os.getenv(key, default)
+    if os.path.isfile(value):
+        with open(value) as f:
+            return f.read()
+    return value
+
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = env.str("SECRET_KEY", default="a!!fdgsdsdfdgewr234ser2345!@@#$sfsdf")
+SECRET_KEY = get_secret("SECRET_KEY", "a!!fdgsdsdfdgewr234ser2345!@@#$sfsdf")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = env.bool("DEBUG", default=False)
+DEBUG = get_secret("DEBUG", "False")
 
-ALLOWED_HOSTS = tuple(
-    env.list(
-        "ALLOWED_HOSTS", default=["localhost", "127.0.0.1", "0.0.0.0", "localhost:8000"]
-    )
+GET_ALLOWED_HOSTS = get_secret(
+    "ALLOWED_HOSTS", ["localhost", "127.0.0.1", "0.0.0.0", "localhost:8000"]
 )
 
+ALLOWED_HOSTS = tuple(GET_ALLOWED_HOSTS.split(","))
 
 # Application definition
-
 INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
@@ -80,12 +85,12 @@ WSGI_APPLICATION = "api.wsgi.application"
 
 DATABASES = {
     "default": {
-        "ENGINE": os.environ.get("SQL_ENGINE", "django.db.backends.sqlite3"),
-        "NAME": os.environ.get("SQL_DATABASE", os.path.join(BASE_DIR, "db.sqlite3")),
-        "USER": os.environ.get("SQL_USER", "user"),
-        "PASSWORD": os.environ.get("SQL_PASSWORD", "password"),
-        "HOST": os.environ.get("SQL_HOST", "localhost"),
-        "PORT": os.environ.get("SQL_PORT", "5432"),
+        "ENGINE": get_secret("SQL_ENGINE", "django.db.backends.sqlite3"),
+        "NAME": get_secret("SQL_DATABASE", "db.sqlite3"),
+        "USER": get_secret("SQL_USER", "user"),
+        "PASSWORD": get_secret("SQL_PASSWORD", "password"),
+        "HOST": get_secret("SQL_HOST", "localhost"),
+        "PORT": get_secret("SQL_PORT", "5432"),
     }
 }
 

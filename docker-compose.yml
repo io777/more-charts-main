@@ -72,7 +72,7 @@ services:
             SQL_USER: /run/secrets/sql_user
             SQL_HOST: /run/secrets/sql_host
             SQL_PASSWORD: /run/secrets/sql_password
-            SQL_PORT: /run/secrets/sql_post
+            SQL_PORT: /run/secrets/sql_port
             EMAIL_HOST: /run/secrets/email_host
             EMAIL_PORT: /run/secrets/email_port
             EMAIL_HOST_USER: /run/secrets/email_host_user
@@ -85,6 +85,23 @@ services:
             PUBG_API3: /run/secrets/django_pubg_api3
         depends_on:
             - postgres
+        secrets:
+            - sql_engine
+            - sql_database
+            - sql_user
+            - sql_host
+            - sql_password
+            - sql_port
+            - email_host
+            - email_port
+            - email_host_user
+            - email_use_ssl
+            - django_debug
+            - django_allowed_hosts
+            - django_secret_key
+            - django_pubg_api1
+            - django_pubg_api2
+            - django_pubg_api3
 
     postgres:
         image: postgres:alpine
@@ -95,6 +112,10 @@ services:
             POSTGRES_USER: /run/secrets/sql_user
             POSTGRES_PASSWORD: /run/secrets/sql_password
             POSTGRES_DB: /run/secrets/sql_database
+        secrets:
+            - sql_user
+            - sql_password
+            - sql_database
     
     cucumber-node-cli:
         build:
@@ -118,8 +139,8 @@ secrets:
         file: ./docker/development/secrets/sql_database
     sql_host:
         file: ./docker/development/secrets/sql_host
-    sql_post:
-        file: ./docker/development/secrets/sql_post
+    sql_port:
+        file: ./docker/development/secrets/sql_port
     celery_allowed_hosts:
         file: ./docker/development/secrets/celery_allowed_hosts
     celery_broker:

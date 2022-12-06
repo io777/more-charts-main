@@ -25,7 +25,7 @@ WORKDIR /app
 
 COPY ./requirements.txt ./
 
-RUN python3 -m pip install -r requirements.txt --cache-dir=/app/api/pip_cache/
+RUN python3 -m pip install -r requirements.txt
 
 # Clean
 RUN apk del -r python3-dev postgresql
