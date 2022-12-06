@@ -177,4 +177,3 @@ secrets:
 networks:
     traefik-public:
         name: traefik-public
-        external: true
