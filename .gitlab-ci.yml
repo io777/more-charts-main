@@ -23,5 +23,6 @@ dev:
             - cucumber/node_modules/
     script:
         - make init
+        - make test
     tags:
         - runner_1
