@@ -18,8 +18,11 @@ services:
             - traefik.docker.network=traefik-public
     
     frontend:
+        image: ${REGISTRY:-localhost}/more-charts-dev-frontend:cache
         build: 
             context: frontend/docker/development/nginx
+            cache_from:
+                - ${REGISTRY:-localhost}/more-charts-dev-frontend:cache
         networks:
             - traefik-public
             - default
@@ -37,17 +40,23 @@ services:
             - frontend-node
     
     frontend-node:
+        image: ${REGISTRY:-localhost}/more-charts-dev-frontend-node:cache
         build:
             context: frontend
             dockerfile: docker/development/node/Dockerfile
+            cache_from:
+                - ${REGISTRY:-localhost}/more-charts-dev-frontend-node:cache
         volumes:
             - ./frontend:/app
         depends_on:
             - api-src    
 
     api:
+        image: ${REGISTRY:-localhost}/more-charts-dev-api:cache
         build: 
             context: api/docker/development/nginx
+            cache_from:
+                - ${REGISTRY:-localhost}/more-charts-dev-api:cache
         networks:
             - traefik-public
             - default
@@ -61,9 +70,12 @@ services:
             - api-src
     
     api-src:
+        image: ${REGISTRY:-localhost}/more-charts-dev-api-src:cache
         build: 
             context: api
             dockerfile: docker/development/src/Dockerfile
+            cache_from:
+                - ${REGISTRY:-localhost}/more-charts-dev-api-src:cache
         volumes:
             - ./api:/app
         environment:
@@ -118,9 +130,12 @@ services:
             - sql_database
     
     cucumber-node-cli:
+        image: ${REGISTRY:-localhost}/more-charts-dev-cucumber-node-cli:cache
         build:
             context: cucumber
             dockerfile: docker/development/node/Dockerfile
+            cache_from:
+                - ${REGISTRY:-localhost}/more-charts-dev-cucumber-node-cli:cache
         volumes:
             - ./cucumber:/app
         network_mode: service:traefik
