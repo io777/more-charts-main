@@ -8,7 +8,7 @@ test: api-test frontend-test test-e2e
 test-e2e: cucumber-clear cucumber-e2e
 
 docker-up:
-	docker-compose up --build -d
+	docker-compose up -d
 
 docker-down:
 	docker-compose down --remove-orphans
