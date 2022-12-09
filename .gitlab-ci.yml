@@ -26,6 +26,7 @@ dev:
             - cucumber/node_modules/
     script:
         - make init
+        - make push-dev-cache
         - make test
     tags:
         - runner_1

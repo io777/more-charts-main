@@ -22,6 +22,9 @@ docker-pull:
 docker-build:
 	docker-compose build --pull
 
+push-dev-cache:
+	docker-compose push
+
 # BACKEND
 api-init: api-pip-install
 
