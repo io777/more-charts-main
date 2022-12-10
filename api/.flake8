@@ -1,4 +1,4 @@
 [flake8]
 per-file-ignores =
     # line too long
-    api/settings.py: E501,
+    api1/settings.py: E501,
