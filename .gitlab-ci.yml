@@ -27,7 +27,7 @@ dev:
     script:
         - make init
         - make push-dev-cache
-        - make test
+        - make api-check-all
     tags:
         - runner_1
     artifacts:

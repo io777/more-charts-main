@@ -44,6 +44,9 @@ api-black:
 api-flake8:
 	docker-compose run --rm api-src flake8 .
 
+api-isort:
+	docker-compose run --rm api-src isort .
+
 api-test:
 	docker-compose run --rm api-src python3 manage.py test
 

@@ -12,6 +12,8 @@ run_ci () {
   black --check .
   # Lint code
   flake8 .
+  #isort your imports, so you don't have to
+  isort .
   # Check that all migrations worked fine:
   python /app/manage.py makemigrations --dry-run --check
 }

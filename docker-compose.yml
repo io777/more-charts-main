@@ -2,7 +2,7 @@ version: "3.8"
 services:
     traefik:
         image: traefik:2.4
-        container_name: traefik
+        # container_name: traefik
         command:
             --providers.docker=true
             --providers.docker.exposedByDefault=false
@@ -138,8 +138,8 @@ services:
                 - ${REGISTRY:-localhost}/more-charts-dev-cucumber-node-cli:cache
         volumes:
             - ./cucumber:/app
-        # network_mode: service:traefik
-        network_mode: container:traefik
+        network_mode: service:traefik
+        # network_mode: container:traefik
         depends_on:
             - traefik
 
