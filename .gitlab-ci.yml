@@ -30,3 +30,6 @@ dev:
         - make test
     tags:
         - runner_1
+    artifacts:
+        paths:
+            - api/var/log
