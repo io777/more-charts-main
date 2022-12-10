@@ -61,3 +61,4 @@ urllib3==1.26.11
 vine==5.0.0
 black==22.10.0
 pre-commit==2.20.0
+flake8==6.0.0

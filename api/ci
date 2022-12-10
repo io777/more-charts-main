@@ -10,6 +10,8 @@ run_ci () {
   python3 manage.py test
   # Check style:
   black --check .
+  # Lint code
+  flake8 .
   # Check that all migrations worked fine:
   python /app/manage.py makemigrations --dry-run --check
 }

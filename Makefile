@@ -41,6 +41,9 @@ api-black-check:
 api-black:
 	docker-compose run --rm api-src black .
 
+api-flake8:
+	docker-compose run --rm api-src flake8 .
+
 api-test:
 	docker-compose run --rm api-src python3 manage.py test
 
