@@ -27,7 +27,16 @@ dev:
     script:
         - make init
         - make push-dev-cache
-        - make api-check-all
+
+        - make api-black-check
+        - make api-flake8
+        - make api-isort
+
+        - make frontend-lintfix
+        - make cucumber-lint-fix
+
+        - make api-test
+        - make frontend-test
     tags:
         - runner_1
     artifacts:
