@@ -20,7 +20,6 @@ docker-pull:
 	- docker-compose pull
 
 docker-build:
-# DOCKER_BUILDKIT=1 COMPOSE_DOCKER_CLI_BUILD=1 docker-compose build --build-arg BUILDKIT_INLINE_CACHE=1 --pull
 	docker-compose build --pull
 
 push-dev-cache:
@@ -108,8 +107,34 @@ cucumber-smoke:
 cucumber-e2e:
 	docker-compose run --rm cucumber-node-cli yarn e2e
 
-# jenkins
-validate-jenkins:
-	curl --user andrey -X POST -F "jenkinsfile=<Jenkinsfile" http://localhost:8000/pipeline-model-converter/validate
-# curl --user ${USER} -X POST -F "jenkinsfile=<Jenkinsfile" ${HOST}/pipeline-model-converter/validate
+# BUILD
 
+build: build-frontend build-frontend-node build-api build-api-src
+
+build-frontend:
+	docker --log-level=debug build --pull --build-arg BUILDKIT_INLINE_CACHE=1 \
+    --cache-from ${REGISTRY}/more-charts-frontend:cache \
+    --tag ${REGISTRY}/more-charts-frontend:cache \
+    --tag ${REGISTRY}/more-charts-frontend:${IMAGE_TAG} \
+    --file frontend/docker/production/nginx/Dockerfile frontend
+
+build-frontend-node:
+	docker --log-level=debug build --pull --build-arg BUILDKIT_INLINE_CACHE=1 \
+    --cache-from ${REGISTRY}/more-charts-frontend-node:cache \
+    --tag ${REGISTRY}/more-charts-frontend-node:cache \
+    --tag ${REGISTRY}/more-charts-frontend-node:${IMAGE_TAG} \
+    --file frontend/docker/production/node/Dockerfile frontend-node
+
+build-api:
+	docker --log-level=debug build --pull --build-arg BUILDKIT_INLINE_CACHE=1 \
+    --cache-from ${REGISTRY}/more-charts-api:cache \
+    --tag ${REGISTRY}/more-charts-api:cache \
+    --tag ${REGISTRY}/more-charts-api:${IMAGE_TAG} \
+    --file api/docker/production/nginx/Dockerfile api
+
+build-api-src:
+	docker --log-level=debug build --pull --build-arg BUILDKIT_INLINE_CACHE=1 \
+    --cache-from ${REGISTRY}/more-charts-api-src:cache \
+    --tag ${REGISTRY}/more-charts-api-src:cache \
+    --tag ${REGISTRY}/more-charts-api-src:${IMAGE_TAG} \
+    --file api/docker/production/src/Dockerfile api-src

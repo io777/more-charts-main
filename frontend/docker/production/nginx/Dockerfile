@@ -1,7 +1,9 @@
 FROM nginx:1.22-alpine
 
-COPY ./docker/production/nginx/conf.d /etc/nginx/conf.d
+RUN apk add --no-cache curl
+
+COPY ./conf.d /etc/nginx/conf.d
 
 WORKDIR /app
 
-COPY ./nuxt ./nuxt
+HEALTHCHECK --interval=5s --timeout=3s --start-period=1s CMD curl --fail http://127.0.0.1/health || exit 1

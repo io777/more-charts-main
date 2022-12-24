@@ -1,24 +1,157 @@
 version: "3.8"
 services:
-    gateway:
-        build:
-            context: gateway/docker/production/nginx
+    traefik:
+        image: traefik:2.4
+        command:
+            --providers.docker=true
+            --providers.docker.exposedByDefault=false
+            --entryPoints.http.address=:80
         ports:
-            - "8080:8080"
-            - "8081:8081"
-        depends_on:
-            - frontend
-            - api
+            - "80:80"
+        networks:
+            - traefik-public
+        volumes:
+            - /var/run/docker.sock:/var/run/docker.sock:ro
+        labels:
+            - traefik.enable=true
+            - traefik.docker.network=traefik-public
+    
     frontend:
-        build: 
-            context: frontend/docker/production/nginx
+        image: ${REGISTRY}/more-charts-dev-frontend:${IMAGE_TAG}
+        networks:
+            - traefik-public
+            - default
+        labels:
+            - traefik.enable=true
+            - traefik.docker.network=traefik-public
+            - traefik.http.routers.frontend.rule=Host(`localhost`) || Host(`www.localhost`)
+            - traefik.http.routers.frontend.entryPoints=http
+            - traefik.http.services.frontend.loadBalancer.server.port=80
+            - traefik.http.middlewares.frontend-redirect.redirectRegex.regex=^(https?://)www.localhost/(.*)$$
+            - traefik.http.middlewares.frontend-redirect.redirectRegex.replacement=$${1}localhost/$${2}
+            - traefik.http.middlewares.frontend-redirect.redirectRegex.permanent=true
+            - traefik.http.routers.frontend.middlewares=frontend-redirect        
         depends_on:
             - frontend-node
     
     frontend-node:
-        build:
-            context: frontend/docker/production/node 
+        image: ${REGISTRY}/more-charts-dev-frontend-node:${IMAGE_TAG}
+        depends_on:
+            - api-src    
 
     api:
-        build: 
-            context: api/docker/production/nginx
+        image: ${REGISTRY}/more-charts-dev-api:${IMAGE_TAG}
+        networks:
+            - traefik-public
+            - default
+        labels:
+            - traefik.enable=true
+            - traefik.docker.network=traefik-public
+            - traefik.http.routers.api.rule=Host(`api.localhost`)
+            - traefik.http.routers.api.entryPoints=http
+            - traefik.http.services.api.loadBalancer.server.port=80        
+        depends_on:
+            - api-src
+    
+    api-src:
+        image: ${REGISTRY}/more-charts-dev-api-src:${IMAGE_TAG}
+        environment:
+            SQL_ENGINE: /run/secrets/sql_engine
+            SQL_DATABASE: /run/secrets/sql_database
+            SQL_USER: /run/secrets/sql_user
+            SQL_HOST: /run/secrets/sql_host
+            SQL_PASSWORD: /run/secrets/sql_password
+            SQL_PORT: /run/secrets/sql_port
+            EMAIL_HOST: /run/secrets/email_host
+            EMAIL_PORT: /run/secrets/email_port
+            EMAIL_HOST_USER: /run/secrets/email_host_user
+            EMAIL_USE_SSL: /run/secrets/email_use_ssl
+            DEBUG: /run/secrets/django_debug
+            ALLOWED_HOSTS: /run/secrets/django_allowed_hosts
+            SECRET_KEY: /run/secrets/django_secret_key
+            PUBG_API1: /run/secrets/django_pubg_api1
+            PUBG_API2: /run/secrets/django_pubg_api2
+            PUBG_API3: /run/secrets/django_pubg_api3
+        depends_on:
+            - postgres
+        secrets:
+            - sql_engine
+            - sql_database
+            - sql_user
+            - sql_host
+            - sql_password
+            - sql_port
+            - email_host
+            - email_port
+            - email_host_user
+            - email_use_ssl
+            - django_debug
+            - django_allowed_hosts
+            - django_secret_key
+            - django_pubg_api1
+            - django_pubg_api2
+            - django_pubg_api3
+
+    postgres:
+        image: postgres:alpinesql_host
+        volumes:
+            - ./db/db-dump:/dump
+            - ./db/db-data:/var/lib/postgresql/data
+        environment:
+            POSTGRES_USER: /run/secrets/sql_user
+            POSTGRES_PASSWORD: /run/secrets/sql_password
+            POSTGRES_DB: /run/secrets/sql_database
+        secrets:
+            - sql_user
+            - sql_password
+            - sql_database
+
+secrets:
+    sql_engine:
+        file: ./docker/production/secrets/sql_engine
+    sql_user:
+        file: ./docker/production/secrets/sql_user
+    sql_password:
+        file: ./docker/production/secrets/sql_password
+    sql_database:
+        file: ./docker/production/secrets/sql_database
+    sql_host:
+        file: ./docker/production/secrets/sql_host
+    sql_port:
+        file: ./docker/production/secrets/sql_port
+    celery_allowed_hosts:
+        file: ./docker/production/secrets/celery_allowed_hosts
+    celery_broker:
+        file: ./docker/production/secrets/celery_broker
+    celery_debug:
+        file: ./docker/production/secrets/celery_debug
+    celery_secret_key:
+        file: ./docker/production/secrets/celery_secret_key
+    django_allowed_hosts:
+        file: ./docker/production/secrets/django_allowed_hosts
+    django_debug:
+        file: ./docker/production/secrets/django_debug
+    django_pubg_api1:
+        file: ./docker/production/secrets/django_pubg_api1
+    django_pubg_api2:
+        file: ./docker/production/secrets/django_pubg_api2
+    django_pubg_api3:
+        file: ./docker/production/secrets/django_pubg_api3
+    django_secret_key:
+        file: ./docker/production/secrets/django_secret_key
+    email_host:
+        file: ./docker/production/secrets/email_host
+    email_host_user:
+        file: ./docker/production/secrets/email_host_user
+    email_port:
+        file: ./docker/production/secrets/email_port
+    email_use_ssl:
+        file: ./docker/production/secrets/email_use_ssl
+    flower_password:
+        file: ./docker/production/secrets/flower_password
+    flower_user:
+        file: ./docker/production/secrets/flower_user
+
+networks:
+    traefik-public:
+        name: traefik-public
