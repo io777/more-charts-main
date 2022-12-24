@@ -108,7 +108,6 @@ cucumber-e2e:
 	docker-compose run --rm cucumber-node-cli yarn e2e
 
 # BUILD
-
 build: build-frontend build-frontend-node build-api build-api-src
 
 build-frontend:
@@ -145,3 +144,15 @@ build-api-src:
     --tag ${REGISTRY}/more-charts-api-src:cache \
     --tag ${REGISTRY}/more-charts-api-src:${IMAGE_TAG} \
 	--file api/docker/production/src/Dockerfile api
+
+
+push-build-cache: push-build-cache-frontend push-build-cache-api
+
+push-build-cache-frontend:
+	docker push ${REGISTRY}/more-charts-frontend:cache
+	docker push ${REGISTRY}/more-charts-frontend-node:cache
+
+push-build-cache-api:
+	docker push ${REGISTRY}/more-charts-api:cache
+	docker push ${REGISTRY}/more-charts-api-src:cache-builder
+	docker push ${REGISTRY}/more-charts-api-src:cache
