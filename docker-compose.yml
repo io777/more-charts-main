@@ -77,7 +77,7 @@ services:
             cache_from:
                 - ${REGISTRY:-localhost}/more-charts-dev-api-src:cache
         volumes:
-            - ./api:/usr/src/app
+            - ./api:/app
         environment:
             SQL_ENGINE: /run/secrets/sql_engine
             SQL_DATABASE: /run/secrets/sql_database

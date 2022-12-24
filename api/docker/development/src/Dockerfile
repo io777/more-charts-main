@@ -1,15 +1,9 @@
-###########
-# BUILDER #
-###########
+FROM python:alpine
 
-# pull official base image
-FROM python:alpine as builder
-
-# set work directory
-WORKDIR /usr/src/app
-
-# set environment variables
+# This prevents Python from writing out pyc files
 ENV PYTHONDONTWRITEBYTECODE 1
+
+# This keeps Python from buffering stdin/stdout
 ENV PYTHONUNBUFFERED 1
 
 # Setup
@@ -25,46 +19,17 @@ RUN apk add --update\
     zlib-dev        \
     libffi-dev
 
-# install dependencies
 RUN pip install --upgrade pip
-COPY ./requirements.txt .
-RUN pip wheel --no-cache-dir --no-deps --wheel-dir /usr/src/app/wheels -r requirements.txt
 
-#########
-# FINAL #
-#########
+WORKDIR /app
 
-# pull official base image
-FROM python:alpine
+COPY ./requirements.txt ./
 
-# create directory for the app user
-RUN mkdir -p /home/app
+RUN python3 -m pip install -r requirements.txt
 
-# create the app user
-RUN addgroup -S app && adduser -S app -G app
+# Clean
+RUN apk del -r python3-dev postgresql
 
-# create the appropriate directories
-ENV HOME=/home/app
-ENV APP_HOME=/home/app/web
-RUN mkdir $APP_HOME
-WORKDIR $APP_HOME
+CMD ["python3", "manage.py", "runserver", "0.0.0.0:8000"]
 
-# install dependencies
-RUN apk update && apk add libpq
-COPY --from=builder /usr/src/app/wheels /wheels
-COPY --from=builder /usr/src/app/requirements.txt .
-RUN pip install --no-cache /wheels/*
-
-# copy entrypoint.sh
-COPY ./docker/development/src/entrypoint.sh .
-RUN sed -i 's/\r$//g'  $APP_HOME/entrypoint.sh
-RUN chmod +x  $APP_HOME/entrypoint.sh
-
-# chown all the files to the app user
-RUN chown -R app:app $APP_HOME
-
-# change to the app user
-USER app
-
-# run entrypoint.sh
-ENTRYPOINT ["/home/app/web/entrypoint.sh"]
+EXPOSE 8000
