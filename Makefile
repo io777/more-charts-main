@@ -123,7 +123,7 @@ build-frontend-node:
     --cache-from ${REGISTRY}/more-charts-frontend-node:cache \
     --tag ${REGISTRY}/more-charts-frontend-node:cache \
     --tag ${REGISTRY}/more-charts-frontend-node:${IMAGE_TAG} \
-    --file frontend/docker/production/node/Dockerfile frontend-node
+    --file frontend/docker/production/node/Dockerfile frontend
 
 build-api:
 	DOCKER_BUILDKIT=1 docker --log-level=debug build --pull --build-arg BUILDKIT_INLINE_CACHE=1 \
@@ -137,11 +137,11 @@ build-api-src:
     --target builder \
     --cache-from ${REGISTRY}/more-charts-api-src:cache-builder \
     --tag ${REGISTRY}/more-charts-api-src:cache-builder \
-	--file api/docker/production/src/Dockerfile api-src
+	--file api/docker/production/src/Dockerfile api
 
 	DOCKER_BUILDKIT=1 docker --log-level=debug build --pull --build-arg BUILDKIT_INLINE_CACHE=1 \
     --cache-from ${REGISTRY}/more-charts-api-src:cache-builder \
     --cache-from ${REGISTRY}/more-charts-api-src:cache \
     --tag ${REGISTRY}/more-charts-api-src:cache \
     --tag ${REGISTRY}/more-charts-api-src:${IMAGE_TAG} \
-	--file api/docker/production/src/Dockerfile api-src
+	--file api/docker/production/src/Dockerfile api
