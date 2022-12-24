@@ -134,7 +134,14 @@ build-api:
 
 build-api-src:
 	DOCKER_BUILDKIT=1 docker --log-level=debug build --pull --build-arg BUILDKIT_INLINE_CACHE=1 \
+    --target builder \
+    --cache-from ${REGISTRY}/more-charts-api-src:cache-builder \
+    --tag ${REGISTRY}/more-charts-api-src:cache-builder \
+	--file api/docker/production/src/Dockerfile api-src
+
+	DOCKER_BUILDKIT=1 docker --log-level=debug build --pull --build-arg BUILDKIT_INLINE_CACHE=1 \
+    --cache-from ${REGISTRY}/more-charts-api-src:cache-builder \
     --cache-from ${REGISTRY}/more-charts-api-src:cache \
     --tag ${REGISTRY}/more-charts-api-src:cache \
     --tag ${REGISTRY}/more-charts-api-src:${IMAGE_TAG} \
-    --file api/docker/production/src/Dockerfile api-src
+	--file api/docker/production/src/Dockerfile api-src
