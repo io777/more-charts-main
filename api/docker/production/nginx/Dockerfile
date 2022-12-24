@@ -2,7 +2,7 @@ FROM nginx:1.22-alpine
 
 RUN apk add --no-cache curl
 
-COPY .docker/production/nginx/conf.d /etc/nginx/conf.d
+COPY ./docker/production/nginx/conf.d /etc/nginx/conf.d
 
 WORKDIR /app
 
