@@ -60,5 +60,9 @@ build:
 
         - make testing-build
         - make push-testing-build-cache
+
+        - make testing-init
+        - make testing-smoke
+        - make testing-e2e
     tags:
         - runner_1
