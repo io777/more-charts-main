@@ -93,7 +93,7 @@ services:
             - django_pubg_api3
 
     postgres:
-        image: postgres:alpinesql_host
+        image: postgres:alpine
         volumes:
             - ./db/db-dump:/dump
             - ./db/db-data:/var/lib/postgresql/data
