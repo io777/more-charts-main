@@ -156,3 +156,63 @@ push-build-cache-api:
 	docker push ${REGISTRY}/more-charts-api:cache
 	docker push ${REGISTRY}/more-charts-api-src:cache-builder
 	docker push ${REGISTRY}/more-charts-api-src:cache
+
+# TEST
+testing-build: testing-build-frontend testing-build-frontend-node testing-build-api testing-build-api-src testing-build-cucumber
+
+testing-build-frontend:
+	DOCKER_BUILDKIT=1 docker --log-level=debug build --pull --build-arg BUILDKIT_INLINE_CACHE=1 \
+    --cache-from ${REGISTRY}/more-charts-testing-frontend:cache \
+    --tag ${REGISTRY}/more-charts-testing-frontend:cache \
+    --tag ${REGISTRY}/more-charts-testing-frontend:${IMAGE_TAG} \
+    --file frontend/docker/testing/nginx/Dockerfile frontend
+
+testing-build-frontend-node:
+	DOCKER_BUILDKIT=1 docker --log-level=debug build --pull --build-arg BUILDKIT_INLINE_CACHE=1 \
+    --cache-from ${REGISTRY}/more-charts-testing-frontend-node:cache \
+    --tag ${REGISTRY}/more-charts-testing-frontend-node:cache \
+    --tag ${REGISTRY}/more-charts-testing-frontend-node:${IMAGE_TAG} \
+    --file frontend/docker/testing/node/Dockerfile frontend
+
+testing-build-api:
+	DOCKER_BUILDKIT=1 docker --log-level=debug build --pull --build-arg BUILDKIT_INLINE_CACHE=1 \
+    --cache-from ${REGISTRY}/more-charts-testing-api:cache \
+    --tag ${REGISTRY}/more-charts-testing-api:cache \
+    --tag ${REGISTRY}/more-charts-testing-api:${IMAGE_TAG} \
+    --file api/docker/testing/nginx/Dockerfile api
+
+testing-build-api-src:
+	DOCKER_BUILDKIT=1 docker --log-level=debug build --pull --build-arg BUILDKIT_INLINE_CACHE=1 \
+    --target builder \
+    --cache-from ${REGISTRY}/more-charts-testing-api-src:cache-builder \
+    --tag ${REGISTRY}/more-charts-testing-api-src:cache-builder \
+	--file api/docker/testing/src/Dockerfile api
+
+	DOCKER_BUILDKIT=1 docker --log-level=debug build --pull --build-arg BUILDKIT_INLINE_CACHE=1 \
+    --cache-from ${REGISTRY}/more-charts-testing-api-src:cache-builder \
+    --cache-from ${REGISTRY}/more-charts-testing-api-src:cache \
+    --tag ${REGISTRY}/more-charts-testing-api-src:cache \
+    --tag ${REGISTRY}/more-charts-testing-api-src:${IMAGE_TAG} \
+	--file api/docker/testing/src/Dockerfile api
+
+testing-build-cucumber:
+	DOCKER_BUILDKIT=1 docker --log-level=debug build --pull --build-arg BUILDKIT_INLINE_CACHE=1 \
+	--cache-from ${REGISTRY}/more-charts-cucumber-node-cli:cache \
+	--tag ${REGISTRY}/more-charts-cucumber-node-cli:cache \
+	--tag ${REGISTRY}/more-charts-cucumber-node-cli:${IMAGE_TAG} \
+	--file cucumber/docker/testing/node/Dockerfile \
+	cucumber
+
+push-testing-build-cache: push-testing-build-cache-frontend push-testing-build-cache-api push-testing-build-cache-cucumber
+
+push-testing-build-cache-frontend:
+	docker push ${REGISTRY}/more-charts-testing-frontend:cache
+	docker push ${REGISTRY}/more-charts-testing-frontend-node:cache
+
+push-testing-build-cache-api:
+	docker push ${REGISTRY}/more-charts-testing-api:cache
+	docker push ${REGISTRY}/more-charts-testing-api-src:cache-builder
+	docker push ${REGISTRY}/more-charts-testing-api-src:cache
+
+push-testing-build-cache-cucumber:
+	docker push ${REGISTRY}/more-charts-cucumber-node-cli:cache

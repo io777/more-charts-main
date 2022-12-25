@@ -57,5 +57,8 @@ build:
     script:
         - make build
         - make push-build-cache
+
+        - make testing-build
+        - make push-testing-build-cache
     tags:
         - runner_1
