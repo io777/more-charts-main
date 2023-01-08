@@ -17,7 +17,7 @@ services:
             - traefik.docker.network=traefik-public
     
     frontend:
-        image: ${REGISTRY}/more-charts-dev-frontend:${IMAGE_TAG}
+        image: ${REGISTRY}/more-charts-frontend:${IMAGE_TAG}
         networks:
             - traefik-public
             - default
@@ -35,12 +35,12 @@ services:
             - frontend-node
     
     frontend-node:
-        image: ${REGISTRY}/more-charts-dev-frontend-node:${IMAGE_TAG}
+        image: ${REGISTRY}/more-charts-frontend-node:${IMAGE_TAG}
         depends_on:
             - api-src    
 
     api:
-        image: ${REGISTRY}/more-charts-dev-api:${IMAGE_TAG}
+        image: ${REGISTRY}/more-charts-api:${IMAGE_TAG}
         networks:
             - traefik-public
             - default
@@ -54,7 +54,7 @@ services:
             - api-src
     
     api-src:
-        image: ${REGISTRY}/more-charts-dev-api-src:${IMAGE_TAG}
+        image: ${REGISTRY}/more-charts-api-src:${IMAGE_TAG}
         environment:
             SQL_ENGINE: /run/secrets/sql_engine
             SQL_DATABASE: /run/secrets/sql_database
