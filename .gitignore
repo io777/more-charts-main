@@ -2,3 +2,4 @@
 .env
 db/
 docker/production/secrets/
+traefik-public-certs/
