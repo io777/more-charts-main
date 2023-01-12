@@ -86,8 +86,8 @@ services:
         depends_on:
             - api-src
         volumes:
-            - ./main/api/static:/var/www/api/static:ro
-            - ./main/api/media:/var/www/api/media:ro
+            - ./main/api/static:/app/static:ro
+            - ./main/api/media:/app/media:ro
     
     api-src:
         image: ${REGISTRY}/more-charts-api-src:${IMAGE_TAG}
@@ -108,6 +108,9 @@ services:
             PUBG_API1: /run/secrets/django_pubg_api1
             PUBG_API2: /run/secrets/django_pubg_api2
             PUBG_API3: /run/secrets/django_pubg_api3
+        volumes:
+            - ./main/api/static:/home/app/web/static:ro
+            - ./main/api/media:/home/app/web/media:ro
         depends_on:
             - postgres
         secrets:
