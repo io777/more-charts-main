@@ -83,6 +83,7 @@ deploy:
         - eval $(ssh-agent -s)
         - mkdir -p ~/.ssh
         - chmod 700 ~/.ssh
+        - ssh-keyscan -H ${PRODUCTION_HOST} >> ~/.ssh/known_hosts
         - echo "${PRODUCTION_KEY}" | tr -d '\r' | ssh-add -
     script:
         - make deploy
