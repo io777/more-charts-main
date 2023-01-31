@@ -157,6 +157,16 @@ push-build-cache-api:
 	docker push ${REGISTRY}/more-charts-api-src:cache-builder
 	docker push ${REGISTRY}/more-charts-api-src:cache
 
+push: push-frontend push-api
+
+push-frontend:
+	docker push ${REGISTRY}/more-charts-frontend:${IMAGE_TAG}
+	docker push ${REGISTRY}/more-charts-frontend-node:${IMAGE_TAG}
+
+push-api:
+	docker push ${REGISTRY}/more-charts-api:${IMAGE_TAG}
+	docker push ${REGISTRY}/more-charts-api-src:${IMAGE_TAG}
+
 # TEST
 testing-build: testing-build-frontend testing-build-frontend-node testing-build-api testing-build-api-src testing-build-cucumber
 
