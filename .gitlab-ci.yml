@@ -86,6 +86,8 @@ deploy:
         - echo "${PRODUCTION_KEY}" | tr -d '\r' | ssh-add -
     script:
         - make deploy
+    tags:
+        - runner_1
     variables:
         BUILD_NUMBER: ${CI_PIPELINE_ID}
         HOST: ${PRODUCTION_HOST}
