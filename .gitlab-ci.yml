@@ -79,7 +79,7 @@ deploy:
         - main
     image: alpine:latest
     before_script:
-        - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
+        - apk add --no-cache make openssh-client
         - mkdir -p ~/.ssh
         - echo "${PRODUCTION_KEY}" | tr -d '\r' > ~/.ssh/id_ed25519
         - chmod 700 ~/.ssh/id_ed25519
