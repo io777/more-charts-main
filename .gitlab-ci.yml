@@ -1,6 +1,7 @@
 stages:
     - dev
     - build
+    - deploy
 
 variables:
     DOCKER_TLS_CERTDIR: "/certs"
