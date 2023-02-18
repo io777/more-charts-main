@@ -196,5 +196,5 @@ volumes:
 
 networks:
     traefik-public:
-        external: true
         name: traefik-public
+        # external: true
