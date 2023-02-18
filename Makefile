@@ -261,7 +261,6 @@ deploy:
 	ssh -o StrictHostKeyChecking=no root@${HOST} -p ${PORT} 'cd site_${BUILD_NUMBER}/docker/production/secrets && echo "${DJANGO_DEBUG}" >> django_debug'
 	ssh -o StrictHostKeyChecking=no root@${HOST} -p ${PORT} 'cd site_${BUILD_NUMBER}/docker/production/secrets && echo "${DJANGO_ALLOWED_HOSTS}" >> django_allowed_hosts'
 	ssh -o StrictHostKeyChecking=no root@${HOST} -p ${PORT} 'cd site_${BUILD_NUMBER} && docker-compose pull'
-	ssh -o StrictHostKeyChecking=no root@${HOST} -p ${PORT} 'cd site_${BUILD_NUMBER} && docker-compose up --build -d api-postgres api-php-cli'
 	ssh -o StrictHostKeyChecking=no root@${HOST} -p ${PORT} 'cd site_${BUILD_NUMBER} && docker-compose up --build --remove-orphans -d'
 	ssh -o StrictHostKeyChecking=no root@${HOST} -p ${PORT} 'rm -f site'
 	ssh -o StrictHostKeyChecking=no root@${HOST} -p ${PORT} 'ln -sr site_${BUILD_NUMBER} site'
