@@ -55,7 +55,7 @@ COPY --from=builder /usr/src/app/wheels /wheels
 COPY --from=builder /usr/src/app/requirements.txt .
 RUN pip install --no-cache /wheels/*
 
-# copy entrypoint.sh
+# # copy entrypoint.sh
 # COPY ./docker/production/src/entrypoint.sh .
 # RUN sed -i 's/\r$//g' $APP_HOME/entrypoint.sh
 # RUN chmod +x $APP_HOME/entrypoint.sh
@@ -63,8 +63,9 @@ RUN pip install --no-cache /wheels/*
 # copy project
 COPY . $APP_HOME
 
+
 # copy entrypoint.sh
-COPY ./docker/production/src/entrypoint.sh $APP_HOME
+COPY ./entrypoint.sh .
 RUN chmod +x $APP_HOME/entrypoint.sh
 
 # chown all the files to the app user
@@ -74,4 +75,4 @@ RUN chown -R app:app $APP_HOME
 USER app
 
 # run entrypoint.sh
-ENTRYPOINT ["./entrypoint.sh"]
+ENTRYPOINT ["/home/app/web/entrypoint.sh"]
