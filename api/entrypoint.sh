@@ -38,6 +38,7 @@ collectstatic(){
     python manage.py collectstatic --no-input
 }
 
+
 case $1 in
     run)
         wait_for_port "$SQL_DATABASE" "$SQL_HOST" "$SQL_PORT"
