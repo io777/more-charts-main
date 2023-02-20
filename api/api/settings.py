@@ -21,7 +21,7 @@ def get_secret(key, default):
     if os.path.isfile(value):
         with open(value) as f:
             return f.read()
-    return value
+    return value.rstrip()
 
 
 # Quick-start development settings - unsuitable for production
