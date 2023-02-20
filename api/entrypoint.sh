@@ -1,4 +1,9 @@
-#!/bin/bash
+#!/bin/sh
+
+SQL_DATABASE_VAR=`cat /run/secrets/sql_database`
+SQL_HOST_VAR=`cat /run/secrets/sql_host`
+SQL_PORT_VAR=`cat /run/secrets/sql_port`
+ACTION="run"
 
 BASE_PATH=`dirname $0`
 TRY_LOOP="20"
@@ -38,10 +43,9 @@ collectstatic(){
     python manage.py collectstatic --no-input
 }
 
-
-case $1 in
+case $ACTION in
     run)
-        wait_for_port "$SQL_DATABASE" "$SQL_HOST" "$SQL_PORT"
+        wait_for_port "$SQL_DATABASE_VAR" "$SQL_HOST_VAR" "$SQL_PORT_VAR"
         echo ""
         echo "==================================================="
         echo "=          Migrations model.                      ="
