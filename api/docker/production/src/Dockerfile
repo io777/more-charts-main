@@ -67,7 +67,9 @@ RUN mkdir -p $APP_HOME/static
 RUN mkdir -p $APP_HOME/media
 
 # chown all the files to the app user
-RUN chown -R app:app $APP_HOME
+# RUN chown -R app:app $APP_HOME
+
+RUN chmod -R 777 $APP_HOME
 
 # change to the app user
 # USER app
