@@ -41,7 +41,7 @@ FROM python:alpine
 RUN mkdir -p /home/app
 
 # create the app user
-RUN addgroup -S app && adduser -S app -G app
+# RUN addgroup -S app && adduser -S app -G app
 
 # create the appropriate directories
 ENV HOME=/home/app
@@ -64,11 +64,11 @@ RUN chmod +x $APP_HOME/entrypoint.sh
 COPY . $APP_HOME
 
 # chown all the files to the app user
-RUN chown -R app:app $APP_HOME
-RUN chmod -R 777 $APP_HOME
+# RUN chown -R app:app $APP_HOME
+# RUN chmod -R 777 $APP_HOME
 
 # change to the app user
-USER app
+# USER app
 
 # run entrypoint.sh
 ENTRYPOINT ["/home/app/web/entrypoint.sh"]
