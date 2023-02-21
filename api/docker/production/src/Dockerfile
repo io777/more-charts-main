@@ -63,9 +63,6 @@ RUN chmod +x $APP_HOME/entrypoint.sh
 # copy project
 COPY . $APP_HOME
 
-RUN mkdir -p $APP_HOME/static
-RUN mkdir -p $APP_HOME/media
-
 # chown all the files to the app user
 # RUN chown -R app:app $APP_HOME
 
