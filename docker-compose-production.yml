@@ -134,9 +134,9 @@ services:
             - ./db/db-dump:/dump
             - ./db/db-data:/var/lib/postgresql/data
         environment:
-            POSTGRES_USER: /run/secrets/sql_user
-            POSTGRES_PASSWORD: /run/secrets/sql_password
-            POSTGRES_DB: /run/secrets/sql_database
+            POSTGRES_USER_FILE: /run/secrets/sql_user
+            POSTGRES_PASSWORD_FILE: /run/secrets/sql_password
+            POSTGRES_DB_FILE: /run/secrets/sql_database
         secrets:
             - sql_user
             - sql_password
