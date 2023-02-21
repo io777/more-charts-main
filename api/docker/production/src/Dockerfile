@@ -65,10 +65,13 @@ COPY . $APP_HOME
 
 # chown all the files to the app user
 # RUN chown -R app:app $APP_HOME
-RUN chmod -R 777 $APP_HOME
 
 # change to the app user
 # USER app
 
 # run entrypoint.sh
-ENTRYPOINT ["/home/app/web/entrypoint.sh"]
+# ENTRYPOINT ["/home/app/web/entrypoint.sh"]
+
+CMD ["python3", "manage.py", "runserver", "0.0.0.0:8000"]
+
+EXPOSE 8000
