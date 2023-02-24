@@ -55,7 +55,7 @@ services:
             - traefik.http.routers.frontend.middlewares=frontend-redirect,secure-headers
             - traefik.http.routers.frontend.entryPoints=https
             - traefik.http.routers.frontend.tls=true
-            - traefik.http.routers.frontend.tls.certResolver=letsEncrypt        
+            - traefik.http.routers.frontend.tls.certResolver=letsEncrypt
         depends_on:
             - frontend-node
     
@@ -191,5 +191,5 @@ volumes:
 
 networks:
     traefik-public:
-        # name: traefik-public
+        name: traefik-public
         external: true
