@@ -64,6 +64,12 @@ case $ACTION in
         echo "=         Let's prepare/build static files.       ="
         echo "==================================================="
         collectstatic
+
+        echo ""
+        echo "==================================================="
+        echo "=             Run server.                    ="
+        echo "==================================================="
+        run $2
     ;;
     migrations)
         echo ""
