@@ -12,6 +12,18 @@ services:
             --certificatesresolvers.letsEncrypt.acme.httpChallenge.entryPoint=http
             --certificatesresolvers.letsEncrypt.acme.email=babadook777@gmail.com
             --certificatesresolvers.letsEncrypt.acme.storage=/certs/acme.json
+        labels:    
+            - traefik.enable=true
+            - traefik.docker.network=traefik-public
+            - traefik.http.routers.http-catchall.rule=HostRegexp(`{host:.+}`)
+            - traefik.http.routers.http-catchall.entryPoints=http
+            - traefik.http.routers.http-catchall.middlewares=redirect-to-https
+            - traefik.http.services.http-catchall.loadBalancer.server.port=80
+            - traefik.http.middlewares.redirect-to-https.redirectScheme.scheme=https
+            - traefik.http.middlewares.redirect-to-https.redirectScheme.permanent=true
+            - traefik.http.middlewares.secure-headers.headers.sslRedirect=true
+            - traefik.http.middlewares.secure-headers.headers.stsSeconds=31536000
+            - traefik.http.middlewares.secure-headers.headers.contentSecurityPolicy=block-all-mixed-content
         ports:
             - target: 80
               published: 80
@@ -26,19 +38,6 @@ services:
         volumes:
             - /var/run/docker.sock:/var/run/docker.sock:ro
             - traefik-public-certs:/certs
-        deploy:
-            labels:
-                - traefik.enable=true
-                - traefik.docker.network=traefik-public
-                - traefik.http.routers.http-catchall.rule=HostRegexp(`{host:.+}`)
-                - traefik.http.routers.http-catchall.entryPoints=http
-                - traefik.http.routers.http-catchall.middlewares=redirect-to-https
-                - traefik.http.services.http-catchall.loadBalancer.server.port=80
-                - traefik.http.middlewares.redirect-to-https.redirectScheme.scheme=https
-                - traefik.http.middlewares.redirect-to-https.redirectScheme.permanent=true
-                - traefik.http.middlewares.security-headers.headers.sslRedirect=true
-                - traefik.http.middlewares.security-headers.headers.stsSeconds=31536000
-                - traefik.http.middlewares.security-headers.headers.contentSecurityPolicy=block-all-mixed-content
     
     frontend:
         image: ${REGISTRY}/more-charts-frontend:${IMAGE_TAG}
@@ -53,7 +52,7 @@ services:
             - traefik.http.middlewares.frontend-redirect.redirectRegex.regex=^(https?://)www.more-charts.ru/(.*)$$
             - traefik.http.middlewares.frontend-redirect.redirectRegex.replacement=$${1}more-charts.ru/$${2}
             - traefik.http.middlewares.frontend-redirect.redirectRegex.permanent=true
-            - traefik.http.routers.frontend.middlewares=frontend-redirect,security-headers
+            - traefik.http.routers.frontend.middlewares=frontend-redirect,secure-headers
             - traefik.http.routers.frontend.entryPoints=https
             - traefik.http.routers.frontend.tls=true
             - traefik.http.routers.frontend.tls.certResolver=letsEncrypt        
@@ -75,7 +74,7 @@ services:
             - traefik.docker.network=traefik-public
             - traefik.http.routers.api.rule=Host(`api.more-charts.ru`)
             - traefik.http.services.api.loadBalancer.server.port=80
-            - traefik.http.routers.api.middlewares=security-headers
+            - traefik.http.routers.api.middlewares=secure-headers
             - traefik.http.routers.api.entryPoints=https
             - traefik.http.routers.api.tls=true
             - traefik.http.routers.api.tls.certResolver=letsEncrypt      
@@ -192,5 +191,5 @@ volumes:
 
 networks:
     traefik-public:
-        name: traefik-public
-        # external: true
+        # name: traefik-public
+        external: true
