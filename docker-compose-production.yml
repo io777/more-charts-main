@@ -5,7 +5,6 @@ services:
         command:
             --providers.docker=true
             --providers.docker.watch=true
-            --providers.docker.swarmMode=true
             --providers.docker.exposedByDefault=false
             --entryPoints.http.address=:80
             --entryPoints.https.address=:443
