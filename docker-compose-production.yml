@@ -39,7 +39,7 @@ services:
             - traefik-public
         volumes:
             - /var/run/docker.sock:/var/run/docker.sock:ro
-            - traefik-public-certs:/certs
+            - /root/traefik-public-certs:/certs
     
     frontend:
         image: ${REGISTRY}/more-charts-frontend:${IMAGE_TAG}
