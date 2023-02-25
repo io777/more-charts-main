@@ -7,11 +7,11 @@ services:
             --providers.docker.watch=true
             --providers.docker.exposedByDefault=false
             --entryPoints.http.address=:80
-            --entryPoints.https.address=:443
-            --certificatesresolvers.letsEncrypt.acme.httpChallenge=true
-            --certificatesresolvers.letsEncrypt.acme.httpChallenge.entryPoint=http
-            --certificatesresolvers.letsEncrypt.acme.email=babadook777@gmail.com
-            --certificatesresolvers.letsEncrypt.acme.storage=/certs/acme.json
+            # --entryPoints.https.address=:443
+            # --certificatesresolvers.letsEncrypt.acme.httpChallenge=true
+            # --certificatesresolvers.letsEncrypt.acme.httpChallenge.entryPoint=http
+            # --certificatesresolvers.letsEncrypt.acme.email=babadook777@gmail.com
+            # --certificatesresolvers.letsEncrypt.acme.storage=/certs/acme.json
         labels:    
             - traefik.enable=true
             - traefik.docker.network=traefik-public
@@ -34,12 +34,12 @@ services:
             #   protocol: tcp
             #   mode: host
             - 80:80
-            - 443:443
+            # - 443:443
         networks:
             - traefik-public
         volumes:
             - /var/run/docker.sock:/var/run/docker.sock:ro
-            - traefik-public-certs:/certs
+            # - traefik-public-certs:/certs
     
     frontend:
         image: ${REGISTRY}/more-charts-frontend:${IMAGE_TAG}
