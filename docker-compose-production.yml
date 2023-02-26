@@ -37,7 +37,7 @@ services:
             - traefik-public
         volumes:
             - /var/run/docker.sock:/var/run/docker.sock:ro
-            - traefik-public-certs:/certs
+            - /root/traefik-public-certs:/certs
     
     frontend:
         image: ${REGISTRY}/more-charts-frontend:${IMAGE_TAG}
@@ -187,8 +187,8 @@ secrets:
     flower_user:
         file: ./docker/production/secrets/flower_user
 
-volumes:
-    traefik-public-certs:
+# volumes:
+#     traefik-public-certs:
 
 networks:
     traefik-public:
