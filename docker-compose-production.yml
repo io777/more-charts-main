@@ -47,7 +47,7 @@ services:
         labels:
             - traefik.enable=true
             - traefik.docker.network=traefik-public
-            - traefik.http.routers.frontend.rule=Host(`more-charts.ru`) || Host(`www.more-charts.ru`)
+            - traefik.http.routers.frontend.rule=Host(`more-charts.ru`)
             - traefik.http.services.frontend.loadBalancer.server.port=80
             - traefik.http.middlewares.frontend-redirect.redirectRegex.regex=^(https?://)www.more-charts.ru/(.*)$$
             - traefik.http.middlewares.frontend-redirect.redirectRegex.replacement=$${1}more-charts.ru/$${2}
