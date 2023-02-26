@@ -12,6 +12,7 @@ services:
             --certificatesresolvers.letsEncrypt.acme.httpChallenge.entryPoint=http
             --certificatesresolvers.letsEncrypt.acme.email=babadook777@gmail.com
             --certificatesresolvers.letsEncrypt.acme.storage=/certs/acme.json
+            --api.dashboard=true
         labels:    
             - traefik.enable=true
             - traefik.docker.network=traefik-public
@@ -24,6 +25,9 @@ services:
             - traefik.http.middlewares.secure-headers.headers.sslRedirect=true
             - traefik.http.middlewares.secure-headers.headers.stsSeconds=31536000
             - traefik.http.middlewares.secure-headers.headers.contentSecurityPolicy=block-all-mixed-content
+            - traefik.http.routers.traefik.service=api@internal
+            - traefik.http.routers.traefik.middlewares=traefik-auth
+            - traefik.http.middlewares.traefik-auth.basicauth.users=admin:admin
         ports:
             - target: 80
               published: 80
@@ -47,7 +51,7 @@ services:
         labels:
             - traefik.enable=true
             - traefik.docker.network=traefik-public
-            - traefik.http.routers.frontend.rule=Host(`more-charts.ru`)
+            - traefik.http.routers.frontend.rule=Host(`more-charts.ru`) || Host(`www.more-charts.ru`)
             - traefik.http.services.frontend.loadBalancer.server.port=80
             - traefik.http.middlewares.frontend-redirect.redirectRegex.regex=^(https?://)www.more-charts.ru/(.*)$$
             - traefik.http.middlewares.frontend-redirect.redirectRegex.replacement=$${1}more-charts.ru/$${2}
@@ -186,10 +190,6 @@ secrets:
         file: ./docker/production/secrets/flower_password
     flower_user:
         file: ./docker/production/secrets/flower_user
-
-# volumes:
-#     traefik-public-certs:
-
 
 networks:
     traefik-public:
